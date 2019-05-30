@@ -6,11 +6,11 @@ mapboxgl.accessToken = 'undefined'
 
 class MapBox extends Component {
   componentDidMount() {
-    
+    console.log(process.env.REACT_APP_ACCESS_TOKEN)
   }
   render() {
     const Map = ReactMapboxGl({
-      accessToken: process.env.REACT_APP_ACCESS_TOKEN
+      accessToken: "pk.eyJ1IjoiY29udGV4dGN1ZSIsImEiOiJjanc5enAxNGQwNG85NDNwM2EwNnYzcmp2In0.-HQ8qYpTaBGzgMLIg_Dh2A"
     });
     return (
 
