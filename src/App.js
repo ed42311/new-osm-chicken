@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, GeoJSONLayer } from "react-mapbox-gl";
 
 mapboxgl.accessToken = 'undefined'
 
@@ -12,6 +12,33 @@ class MapBox extends Component {
     const Map = ReactMapboxGl({
       accessToken: "pk.eyJ1IjoiY29udGV4dGN1ZSIsImEiOiJjanc5enAxNGQwNG85NDNwM2EwNnYzcmp2In0.-HQ8qYpTaBGzgMLIg_Dh2A"
     });
+
+    const geojson = {
+      'type': 'FeatureCollection',
+      'features': [
+        {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'LineString',
+            'coordinates': [
+              [
+                -122.4159547,
+                37.7921393
+              ],
+              [
+                -122.4155259,
+                37.7921938
+              ]
+            ]
+          }
+        }
+      ]
+    };
+    
+    const linePaint: MapboxGL.LinePaint = {
+      'line-color': 'red',
+      'line-width': 5
+    };
     return (
 
       <Map
@@ -20,12 +47,10 @@ class MapBox extends Component {
         height: "100vh",
         width: "100vw"
         }}>
-        <Layer
-          type="symbol"
-          id="marker"
-          layout={{ "icon-image": "marker-15" }}>
-          <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
-        </Layer>
+        <GeoJSONLayer
+          data={geojson}
+          linePaint={linePaint}
+        />
     </Map>
     )
   }
@@ -34,13 +59,11 @@ class MapBox extends Component {
 class App extends Component {
   componentDidMount() {
     let query = `{
-      PointOfInterest(first:10, offset: 4) {
-        name
-        poi_id
-        shortestPathRouteToPOI(poi_id:"Mad Dog in the Fog37.7721448-122.4310153") {
-          lat
-          lon
-        }
+      unwalkedPaths {
+        endLat
+        endLon
+        startLat
+        startLon
       }
     }`
     let body = {
